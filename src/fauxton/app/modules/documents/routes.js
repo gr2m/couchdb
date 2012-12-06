@@ -105,6 +105,46 @@ function(app, FauxtonAPI, Documents, Databases) {
     };
   };
 
+  var DocRouteObject = FauxtonAPI.RouteObject.extend({
+    layout: "one_pane",
+    route: "database/:database/*",
+
+    handleRoute: function(database, rest) {
+      var parts = rest.split('/');
+      var docID = parts[0];
+      this.selected = parts[2] || "code_editor";
+
+      this.database = new Databases.Model({id:databaseName}),
+      this.doc = new Documents.Doc({
+        "_id": docID
+      });
+      this.doc.database = this.database;
+      this.designDocs = new Documents.AllDocs(null, {
+        database: data.database,
+        params: {startkey: '"_design"',
+                 endkey: '"_design1"',
+                 include_docs: true}
+      });
+
+      var options = app.getParams();
+      options.include_docs = true;
+      data.database.buildAllDocs(options);
+    },
+
+    handleUpdate: function(database, rest) {
+      var parts = rest.split('/');
+      var docID = parts[0];
+    },
+
+    validSubroute: function(database, rest) {
+      var parts = rest.split('/');
+      var docID = parts[0];
+
+      return this.database.id === database &&
+        this.docID && this.doc.id === docID;
+    }
+  });
+
   Documents.Routes = {
     "database/:database/:doc/field_editor": function(databaseName, docID) {
       var data = {

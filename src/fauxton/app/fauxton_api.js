@@ -67,5 +67,23 @@ function(app, Dashboard, Fauxton) {
     }
   });
 
+  FauxtonAPI.RouteObject = function() {
+    this._options = arguments;
+
+    this.initialize.apply(this, arguments);
+  };
+
+  _.extend(FauxtonAPI.RouteObject.prototype, Backbone.Events, {
+    initialize: function() {},
+    getLayout: function() { return this.layout; },
+    getCrumbs: function() { return []; },
+    getViews: function() { return {}; },
+    apiUrl: function() {},
+    establish: function() {},
+    getRoute: function() { return this.route; },
+    validSubroute: function() { return false; },
+    handle: function() {}
+  });
+
   return app.fauxtonAPI = FauxtonAPI;
 });
