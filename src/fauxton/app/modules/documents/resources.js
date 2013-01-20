@@ -97,9 +97,36 @@ function(app, FauxtonAPI, Views) {
       return resp;
     },
 
+    _keyOrderValid: function(data) {
+      var keys = _.keys(data);
+      // Can't assume _id is key 0 as certain browsers (e.g. Chrome) will
+      // numerically sort any key that can be parsed as a number and put those
+      // before the other keys
+      var indexOfId = _.indexOf(keys, "_id");
+      return keys[indexOfId + 1] === "_rev";
+    },
+
+    _fixKeyOrder: function(data) {
+      var fixed = {
+        "_id": data._id,
+        "_rev": data._rev
+      };
+      _.each(_.keys(data), function(key) {
+        if (!(key in fixed)) {
+          fixed[key] = data[key];
+        }
+      });
+      return fixed;
+    },
+
     prettyJSON: function() {
       var data = this.get("doc") ? this.get("doc") : this;
-
+      if (typeof(data.toJSON) === "function") {
+        data = data.toJSON();
+      }
+      if (!this._keyOrderValid(data)) {
+        data = this._fixKeyOrder(data);
+      }
       return JSON.stringify(data, null, "  ");
     }
   });
