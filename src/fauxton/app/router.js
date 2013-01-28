@@ -81,7 +81,7 @@ function(req, app, Initialize, FauxtonAPI, Fauxton, Layout, Databases, Documents
   var Router = app.router = Backbone.Router.extend({
     routes: {},
 
-    // These moduleRoutes functions are aguably better outside but
+    // These moduleRoutes functions are arguably better outside but
     // need access to the Router instance which is not created in this
     // module
     addModuleRoute: function(generator, route) {
