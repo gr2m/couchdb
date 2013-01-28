@@ -1,0 +1,8 @@
+{
+  "deps": [
+    { "name": "config" },
+    { "name": "newconfig" },
+    { "name": "logs" },
+    { "name": "stats" }
+  ]
+}

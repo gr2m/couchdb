@@ -1,0 +1,28 @@
+<h1>New Config</h1>
+
+<div class=".list">
+  <% _(reference).each( function(section) {  %>
+  <h2><%= section.name  %></h2>
+  <p><%= section.description || "<em>description missing</em>"  %></p>
+  <table class="table">
+    <thead>
+      <tr>
+        <th style="width: 180px;">setting</th>
+        <th>value</th>
+        <th style="width: 500px;"> info</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% _(section.values).each( function(value) {  %>
+      <tr>
+        <td><%= value.name  %></td>
+        <td><%= value.default  %></td>
+        <td>
+          <div style="width: 500px; white-space: pre; overflow: auto;"><%= value.description  %></div>
+        </td>
+      </tr>
+      <% })  %>
+    </tbody>
+  </table>
+  <% })  %>
+</div>
